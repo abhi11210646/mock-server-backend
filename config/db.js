@@ -4,9 +4,9 @@ mongoose.Promise = global.Promise;
 module.exports = (config) => {
     const options = {
             keepAlive: 1000,
-            useNewUrlParser: true,
-            useCreateIndex: true
+            useMongoClient:true
     };
+    mongoose.set('debug', true);
     mongoose.connect(config.db, options, (err, db) => {
         if(err){ console.log('Mongoose connection error', err.message); process.exit(0);}
     });

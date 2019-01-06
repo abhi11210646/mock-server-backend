@@ -23,7 +23,8 @@ module.exports = {
             let projects = [];
             const projectID = req.params['projectID'];
             if (projectID) {
-                projects = [await projectHelper.getProject(projectID, req.user.id, true)];
+                const project = await projectHelper.getProject(projectID, req.user.id, true);
+                projects = project ? [project] : [];
             }
             else {
                 projects = await Project.find({ user: req.user.id });
@@ -36,8 +37,14 @@ module.exports = {
     },
     deleteProject: async(req, res) => {
         try {
-            const project = await Project.findByOneAndRemove({ _id: req.body['projectID'], user: req.body.id });
-            return response.created(res, { data: project, info: 'Successfully Deleted!' });
+            const project = await Project.findOne({ _id: req.body['projectID'], user: req.user.id });
+            if (project) {
+                await project.remove();
+                return response.ok(res, { message: 'Deleted' });
+            }
+            else {
+                return response.notfound(res, { message: 'Project Not Found!' });
+            }
         }
         catch (error) {
             return response.error(res, error);

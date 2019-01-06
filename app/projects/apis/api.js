@@ -21,14 +21,14 @@ module.exports = {
     deleteApi: async(req, res) => {
         try {
             if (req.user.id !== req.body['user']) return response.unAuthorize(res, { message: 'Unauthorize operation!' });
-            const apis = await Api.findByIdAndRemove(req.body['apiID']);
-            return response.ok(res, { apis });
+            await Api.remove({ _id: req.body['apiID'] });
+            return response.ok(res, { message:"Api deleted!" });
         }
         catch (error) {
             return response.error(res, error);
         }
     },
-    getApi: async(req, res) => {
+    getApis: async(req, res) => {
         try {
             const apis = await Api.find({ project: req.params['projectID'] });
             return response.ok(res, { apis });

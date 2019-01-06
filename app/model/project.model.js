@@ -22,4 +22,9 @@ const projectSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+projectSchema.pre('remove', function (next) {
+    let Api = mongoose.model('Api');
+    Api.find({ _id: { $in: this.apis } }).remove(() => { });
+    return next();
+});
 module.exports = mongoose.model('Project', projectSchema);
