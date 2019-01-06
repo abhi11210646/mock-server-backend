@@ -7,10 +7,12 @@ const User = mongoose.model('User');
 module.exports = {
     // login controller
     login: (req, res) => {
-        passport.authenticate('local', async (err, user, info) => {
+        passport.authenticate('local', async(err, user, info) => {
             if (err) { return response.error(res, err); }
             if (!user) { return response.unAuthorize(res, info); }
-            let token = await new jwtService().createJwtToken({ id: user._id, email: user.username });
+            let payload = { id: user._id, email: user.username };
+            if (user.username === process.env.ADMIN) { payload.role = 'ADMIN'; }
+            let token = await new jwtService().createJwtToken(payload);
             response.ok(res, token);
         })(req, res);
     },
@@ -20,7 +22,7 @@ module.exports = {
             user.password = user.encryptPassword(req.body.password);
             await user.save();
             let token = await new jwtService().createJwtToken({ id: user._id, email: user.username });
-            return response.created(res, { data:token, info: 'Successfully Registered!' });
+            return response.created(res, { data: token, info: 'Successfully Registered!' });
         }
         catch (error) {
             return response.error(res, error);
