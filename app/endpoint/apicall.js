@@ -28,7 +28,7 @@ module.exports = {
         }
         catch (error) {
             if(error.name === 'CastError') {
-                 response.notfound(res, { message: 'EndPoint does not exists!' });
+                 return response.notfound(res, { message: 'EndPoint does not exists!' });
             }
             return response.error(res, error);
         }
