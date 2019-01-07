@@ -1,6 +1,6 @@
 'use strict';
 const endpoint = require('./../../app/endpoint/apicall');
-const rateLimit = require("./../../ratelimiter/rate_limiter");
+const rateLimit = require("./../../rateLimiter/rate_limiter");
 module.exports = (app, passport) => {
     
     app.use('/api', require('./route_v1')(passport));
