@@ -13,13 +13,18 @@ module.exports = {
                 res.type(response.bodyType);
                 if (response.bodyType === 'application/json') {
                     try {
-                        response.bodyType = JSON.parse(response.bodyType);
+                        response.body = JSON.parse(response.body);
                     }
                     catch (e) {
-                        response.bodyType = { data: response.bodyType };
+                        response.body = { data: response.body };
                     }
                 }
                 helper.setHeaders(res, response.headers);
+                // rate limiter middelware set this function
+                if (req.rateLimit) {
+                    const remaining = await req.rateLimit();
+                    res.setHeader('X-Rate-Limit-Remaining', remaining);
+                }
                 res.status(response.statusCode).send(response.body);
             }
             else {
@@ -27,8 +32,8 @@ module.exports = {
             }
         }
         catch (error) {
-            if(error.name === 'CastError') {
-                 return response.notfound(res, { message: 'EndPoint does not exists!' });
+            if (error.name === 'CastError') {
+                return response.notfound(res, { message: 'EndPoint does not exists!' });
             }
             return response.error(res, error);
         }
