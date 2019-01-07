@@ -27,6 +27,11 @@ const retryStrategy = function (options) {
 const redisUrl = process.env.REDIS_URL || '';
 let client = redis.createClient(redisUrl, { retry_strategy: retryStrategy });
 
+const bluebird = require('bluebird');
+
+bluebird.promisifyAll(redis.RedisClient.prototype);
+bluebird.promisifyAll(redis.Multi.prototype);
+
 client.on('error', err => console.log('Redis error ' + err));
 
 client.on('connect', () => console.log('connected to redis'));

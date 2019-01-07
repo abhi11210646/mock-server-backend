@@ -1,21 +1,23 @@
 'use strict';
 const redisClient = require('./index');
-const util = require('util');
-const incrAsync = util.promisify(redisClient.incr);
-const getAsync = util.promisify(redisClient.get);
-const expireAsync = util.promisify(redisClient.expire);
 module.exports = {
     for: (key) => {
         const increase = () => {
-            return incrAsync(key);
+            return redisClient.incrAsync(key);
         };
         const get = () => {
-            return getAsync(key);
+            return redisClient.getAsync(key);
+        };
+        const reset = () => {
+            return redisClient.delAsync(key);
         };
         const expire = (time) => {
-            return expireAsync(key, time);
+            return redisClient.expireAsync(key, time);
         };
-        return { increase, expire, get };
+        const ttl = () => {
+            return redisClient.ttlAsync(key);
+        };
+        return { increase, expire, get, reset, ttl };
     },
     isStoreActive: () => {
         return redisClient.connected;
