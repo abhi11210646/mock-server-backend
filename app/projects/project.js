@@ -10,7 +10,7 @@ module.exports = {
                 name: req.body.name,
                 user: req.user.id
             });
-            project.endpoint = req.protocol + '://' + project._id + '.' + req.hostname;
+            project.endpoint = req.protocol + '://' + project._id + '.jonu.ml';
             await project.save();
             return response.created(res, { data: project, info: 'Successfully Created!' });
         }

@@ -7,7 +7,7 @@ module.exports = {
     apiCall: async(req, res) => {
         try {
             const project = req.subdomains[0];
-            const api = await Api.findOne({ project: project, "req.method": req.method, "req.path": req.params.path });
+            const api = await Api.findOne({ project: project, "req.method": req.method, "req.path": req.url });
             if (api) {
                 const response = api.res;
                 // const response = {
