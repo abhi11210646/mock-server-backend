@@ -10,15 +10,15 @@ module.exports = {
             const api = await Api.findOne({ project: project, "req.method": req.method, "req.path": req.url });
             if (api) {
                 const response = api.res;
-                // const response = {
-                //     body: {
-                //         status: "OKAYYYYYYYdddddd!!!!"
-                //     },
-                //     headers: [{ x: 'y' }, { y: 'z' }],
-                //     statusCode: 200,
-                //     bodyType: 'application/json'
-                // };
                 res.type(response.bodyType);
+                if (response.bodyType === 'application/json') {
+                    try {
+                        response.bodyType = JSON.parse(response.bodyType);
+                    }
+                    catch (e) {
+                        response.bodyType = { data: response.bodyType };
+                    }
+                }
                 helper.setHeaders(res, response.headers);
                 res.status(response.statusCode).send(response.body);
             }
@@ -27,6 +27,9 @@ module.exports = {
             }
         }
         catch (error) {
+            if(error.name === 'CastError') {
+                 response.notfound(res, { message: 'EndPoint does not exists!' });
+            }
             return response.error(res, error);
         }
     },
