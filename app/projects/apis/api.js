@@ -14,6 +14,7 @@ module.exports = {
                 let api = new Api();
                 api.req = req.body.req;
                 api.res = req.body.res;
+                api.res.body = JSON.stringify(req.body.res.body);
                 api.project = req.body.projectId;
                 await api.save();
                 await Project.update({ _id: req.body.projectId }, { $push: { "apis": api._id } });
