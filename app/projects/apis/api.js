@@ -6,18 +6,18 @@ const Project = mongoose.model('Project');
 module.exports = {
     createApi: async(req, res) => {
         try {
-            if (Object.keys(req.body.req).length && req.body.projectId && Object.keys(req.body.res).length) {
+            if (Object.keys(req.body.req).length && req.body.project && Object.keys(req.body.res).length) {
                 
-                const _api = await Api.findOne({ project: req.body.projectId, 'req.method': req.body.req.method, 'req.path': req.body.req.path });
+                const _api = await Api.findOne({ project: req.body.project, 'req.method': req.body.req.method, 'req.path': req.body.req.path });
                 if (_api) return response.conflict(res, { message: 'Api Already exists!' });
                 
                 let api = new Api();
                 api.req = req.body.req;
                 api.res = req.body.res;
                 api.res.body = JSON.stringify(req.body.res.body);
-                api.project = req.body.projectId;
+                api.project = req.body.project;
                 await api.save();
-                await Project.update({ _id: req.body.projectId }, { $push: { "apis": api._id } });
+                await Project.update({ _id: req.body.project }, { $push: { "apis": api._id } });
                 return response.created(res, { data: api, info: 'Successfully Created!' });
             }
             else {

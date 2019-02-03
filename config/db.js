@@ -6,7 +6,7 @@ module.exports = (config) => {
             keepAlive: 1000,
             useMongoClient:true
     };
-    mongoose.set('debug', true);
+    // mongoose.set('debug', true);
     mongoose.connect(config.db, options, (err, db) => {
         if(err){ console.log('Mongoose connection error', err.message); process.exit(0);}
     });

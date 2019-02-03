@@ -12,14 +12,14 @@ module.exports = (passport) => {
     router.post('/signUp', user.signUp);
 
     //projects
-    router.post('/createProject', isAuthenticated, project.createProject);
-    router.get('/getProject/:projectID?', isAuthenticated, project.getProject);
-    router.delete('/deleteProject', isAuthenticated, project.deleteProject);
+    router.post('/project', isAuthenticated, project.createProject);
+    router.get('/project/:projectID?', isAuthenticated, project.getProject);
+    router.delete('/project', isAuthenticated, project.deleteProject);
 
     // apis
-    router.post('/createApi', isAuthenticated, api.createApi);
-    router.get('/getApis/:projectID', isAuthenticated, api.getApis);
-    router.delete('/deleteApi', isAuthenticated, api.deleteApi);
+    router.post('/api', isAuthenticated, api.createApi);
+    router.get('/api/:projectID', isAuthenticated, api.getApis);
+    router.delete('/api', isAuthenticated, api.deleteApi);
 
     //admin task
     router.post('/assignProject', isAuthenticated, isAdmin, admin.assignProject);

@@ -4,7 +4,7 @@ const response = require('./../../config/response');
 module.exports = {
     assignProject: async(req, res) => {
         try {
-            const projectId = req.body.projectID;
+            const projectId = req.body.project;
             const user = req.body.user;
             await Project.update({ _id: projectId }, { $set: { user: user } });
             response.ok(res, { message: 'Successfully transferred!' });
