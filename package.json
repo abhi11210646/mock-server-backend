@@ -1,9 +1,17 @@
 {
   "name": "mock-server",
+  "jest": {
+    "verbose": true,
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      ".c9/"
+    ]
+  },
   "version": "1.0.0",
   "description": "starting from scratch",
   "scripts": {
     "start": "node server.js",
+    "test": "jest --env=node --colors",
     "start:dev": "nodemon server.js"
   },
   "author": "",
@@ -16,7 +24,7 @@
     "dotenv": "6.0.0",
     "express": "4.16.3",
     "jsonwebtoken": "^8.3.0",
-    "mongoose": "4.13.11",
+    "mongoose": "4.10.0",
     "passport": "0.4.0",
     "passport-jwt": "4.0.0",
     "passport-local": "1.0.0",
@@ -24,6 +32,8 @@
     "redis": "^2.8.0"
   },
   "devDependencies": {
-    "nodemon": "1.18.4"
+    "jest": "^22.4.4",
+    "nodemon": "1.18.4",
+    "supertest": "^3.4.2"
   }
 }

@@ -11,6 +11,10 @@ require("./serverConfig")(app, passport);
 require("./config/route")(app, passport);
 
 //listen on PORT
-app.listen(process.env.PORT || 3000, () => {
-    console.log('process listening ON', process.env.PORT || 3000);
+
+const server = app.listen(process.env.PORT || 3000, () => {
+    console.log('process listening ON', server.address());
 });
+
+
+module.exports = server;

@@ -18,5 +18,15 @@ module.exports = {
             issuer: 'jonu',
             audience: 'not sure',
         }
-    },
+    }, 
+    test: {
+        db: process.env.DB_TEST,
+        jwt: {
+            secretOrKey: 'TEST_SECRET',
+            algorithm: 'HS256',
+            expiresIn: '1h',
+            issuer: 'jonu tEST',
+            audience: 'YOU',
+        }
+    }
 }[process.env.NODE_ENV || 'development'];
