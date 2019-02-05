@@ -1,4 +1,4 @@
-const app = require('express')();
+const app = require("express")();
 const passport = require('passport');
 
 // Bootstrap schemas, models
@@ -15,6 +15,5 @@ require("./config/route")(app, passport);
 const server = app.listen(3000, () => {
     console.log('process listening ON', server.address());
 });
-
 
 module.exports = server;

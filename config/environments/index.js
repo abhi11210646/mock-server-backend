@@ -1,6 +1,6 @@
 module.exports = {
     development: {
-        db: process.env.DB_DEV,
+        db: 'mongodb://mock:server2@ds149754.mlab.com:49754/mock-server',
         jwt: {
             secretOrKey: process.env.SECRET || 'SECRET',
             algorithm: 'HS256',
@@ -10,7 +10,7 @@ module.exports = {
         }
     },
     production: {
-        db: process.env.DB_LIVE,
+        db: 'mongodb://mock:server2@ds149754.mlab.com:49754/mock-server',
         jwt: {
             secretOrKey: process.env.SECRET || 'SECRET',
             algorithm: 'HS256',
@@ -20,7 +20,7 @@ module.exports = {
         }
     }, 
     test: {
-        db: process.env.DB_TEST,
+        db: 'mongodb://mock:server2@ds149754.mlab.com:49754/mock-server',
         jwt: {
             secretOrKey: 'TEST_SECRET',
             algorithm: 'HS256',

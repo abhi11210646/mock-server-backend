@@ -1,10 +1,10 @@
 
 const request = require('supertest');
 const mongoose = require('mongoose');
-module.exports = (server) =>{
+const expect = require("chai").expect;
 describe('/APIs', async () => {
     let token, id = mongoose.Types.ObjectId();
-    // let server;
+    let server;
     let Project;
     let Api;
     let jwtService;
@@ -21,8 +21,8 @@ describe('/APIs', async () => {
         }
     }
     // do initialization
-    beforeAll(async () => {
-        // server = require("../../server");
+    before(async () => {
+        server = require("../../server");
         Project = mongoose.model('Project');
         Api = mongoose.model('Api');
         jwtService = require("../../app/services/jwtService");
@@ -42,51 +42,50 @@ describe('/APIs', async () => {
     describe('GET /', async () => {
         it('Should return 401 if User is not logged in', async () => {
             const res = await request(server).get('/api/api/' + project._id);
-            expect(res.status).toBe(401);
+            expect(res.status).to.equal(401);
         });
         it('Should return status false if ID not Valid', async () => {
+            // console.log('a',token)
             const res = await request(server).get('/api/api/1').set('Authorization', 'jwt ' + token);
-            expect(res.body.status).toBeFalsy();
+            expect(res.body.status).to.false;
         });
         it('Should return 200 if Valid Input', async () => {
             const res = await request(server).get('/api/api/' + project._id).set('Authorization', 'jwt ' + token);
-            expect(res.status).toBe(200);
+            expect(res.status).to.equal(200);
         });
     });
     describe('DELETE /', async () => {
         it('Should return 401 if User is not logged in', async () => {
             const res = await request(server).delete('/api/api');
-            expect(res.status).toBe(401);
+            expect(res.status).to.equal(401);
         });
         it('Should return 200 on Valid Input', async () => {
             const res = await request(server).delete('/api/api').set('Authorization', 'jwt ' + token).send({ apiID: apis[0]._id, user: id });
-            expect(res.status).toBe(200);
+            expect(res.status).to.equal(200);
         });
     });
     describe('POST /', async () => {
         it('Should return 401 if User is not logged in', async () => {
             const res = await request(server).post('/api/api');
-            expect(res.status).toBe(401);
+            expect(res.status).to.equal(401);
         });
         it('Should return 400 if InValid input is Passed', async () => {
             const res = await request(server).post('/api/api').set('Authorization', 'jwt ' + token).send({ project: "dd", req: {}, res: {} });
-            expect(res.status).toBe(400);
+            expect(res.status).to.equal(400);
         });
         it('Should return 409 if API is exists', async () => {
             const res = await request(server).post('/api/api').set('Authorization', 'jwt ' + token).send(apiSchema);
-            expect(res.status).toBe(409);
+            expect(res.status).to.equal(409);
         });
         it('Should return 200 on Valid Input', async () => {
             apiSchema.req.method = "POST"
             const res = await request(server).post('/api/api').set('Authorization', 'jwt ' + token).send(apiSchema);
-            expect(res.status).toBe(201);
+            expect(res.status).to.equal(201);
         });
     });
     // do cleanup
-    afterAll(async () => {
+    after(async () => {
         await server.close();
     });
 
 });
-
-}
